@@ -1,12 +1,25 @@
 from flask import Blueprint, jsonify, request
 from bson.objectid import ObjectId
 from ..database import coleccion # Importamos la colección desde database.py
-from .services import consulta_empleado, agregar_registro, limpiar_acentos, actualizar_datos, borrar_registro
+from .services import consulta_empleado, agregar_registro, limpiar_acentos, actualizar_datos, borrar_registro, consulta_All
 import unicodedata
 # Creamos el Blueprint
 gafetDigital_bp = Blueprint('gafetDigital', __name__)
 
 # --- Rutas del Blueprint ---
+
+@gafetDigital_bp.route('/find', methods=['GET'])
+def obtenerAll():
+    resultado = consulta_All()
+    
+    # Validamos si la función de servicio devolvió un diccionario de error
+    if isinstance(resultado, dict) and "error" in resultado:
+        return jsonify(resultado), 500
+        
+    # Si todo está bien, mandamos la lista de usuarios con un estatus 200 OK
+    return jsonify(resultado), 200
+
+
 
 @gafetDigital_bp.route('/find/<string:id>', methods=['GET'])
 def obtener_tareas(id):

@@ -23,6 +23,23 @@ def limpiar_acentos(datos):
         return datos
 
 
+def consulta_All():
+    try:
+        # Buscamos todos los documentos en la colección
+        cursor = coleccion.find({})
+        
+        lista_empleados = []
+        for datos in cursor:
+            # Convertimos el ObjectId a string para evitar errores de serialización
+            datos["_id"] = str(datos["_id"])
+            lista_empleados.append(datos)
+            
+        return lista_empleados
+    except Exception as e:
+        print(f"Error al consultar todos los registros: {e}")
+        return {"error": "Error interno al obtener los registros"}
+
+
 def consulta_empleado(id_string):
     try:
         datos = coleccion.find_one({"_id": ObjectId(id_string)})
