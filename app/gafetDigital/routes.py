@@ -7,6 +7,13 @@ import unicodedata
 gafetDigital_bp = Blueprint('gafetDigital', __name__)
 
 # --- Rutas del Blueprint ---
+@gafetDigital_bp.route('/findusuario', methods=['GET'])
+def obtenerUsuario():
+
+    return jsonify("poner el json aqui pendejo"),200
+
+
+
 
 @gafetDigital_bp.route('/find', methods=['GET'])
 def obtenerAll():

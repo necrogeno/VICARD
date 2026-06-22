@@ -1,5 +1,5 @@
 from bson.objectid import ObjectId
-from ..database import coleccion
+from ..database import coleccion, coleccionUsuarios
 import unicodedata
 
 
@@ -22,6 +22,15 @@ def limpiar_acentos(datos):
         # Si es un número o booleano, se devuelve tal cual
         return datos
 
+def consulta_usuario(correo):
+    try:
+        datos = coleccionUsuarios.find_one({"correo": correo})
+        if datos:
+            datos["_id"] = str(datos["_id"])
+            return datos
+        return None
+    except Exception:
+        return {"error": "Formato de correo inválido"}
 
 def consulta_All():
     try:
