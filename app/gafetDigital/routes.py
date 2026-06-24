@@ -1,18 +1,27 @@
 from flask import Blueprint, jsonify, request
 from bson.objectid import ObjectId
 from ..database import coleccion # Importamos la colección desde database.py
-from .services import consulta_empleado, agregar_registro, limpiar_acentos, actualizar_datos, borrar_registro, consulta_All
+from .services import consulta_empleado, consulta_usuario, agregar_registro, limpiar_acentos, actualizar_datos, borrar_registro, consulta_All
 import unicodedata
 # Creamos el Blueprint
 gafetDigital_bp = Blueprint('gafetDigital', __name__)
 
 # --- Rutas del Blueprint ---
-@gafetDigital_bp.route('/findusuario', methods=['GET'])
-def obtenerUsuario():
-
-    return jsonify("poner el json aqui pendejo"),200
-
-
+@gafetDigital_bp.route('/findusuario/<string:correo>', methods=['GET'])
+def obtenerUsuario(correo):
+    # Llamamos a la función de la imagen pasándole el correo de la URL
+    resultado = consulta_usuario(correo)
+    
+    # Si no se encontró el usuario (retornó None)
+    if resultado is None:
+        return jsonify({"mensaje": "Usuario no encontrado"}), 404
+        
+    # Si la función atrapó una excepción y regresó el diccionario de error
+    if isinstance(resultado, dict) and "error" in resultado:
+        return jsonify(resultado), 400
+        
+    # Si todo salió bien, regresamos los datos con estatus 200 OK
+    return jsonify(resultado), 200
 
 
 @gafetDigital_bp.route('/find', methods=['GET'])
