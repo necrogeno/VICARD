@@ -1,0 +1,9 @@
+services:
+  vicard_back:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    # Solo escucha en la IP privada/VPN de este servidor, alcanzable
+    # únicamente por el servidor de frontend. Nunca 0.0.0.0.
+    ports:
+      - "${BACKEND_BIND_IP}:5000:5000"

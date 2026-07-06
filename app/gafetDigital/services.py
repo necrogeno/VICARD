@@ -32,6 +32,16 @@ def consulta_usuario(correo):
     except Exception:
         return {"error": "Formato de correo inválido"}
 
+def consulta_usuario_por_rfc(rfc):
+    try:
+        datos = coleccionUsuarios.find_one({"rfc": rfc})
+        if datos:
+            datos["_id"] = str(datos["_id"])
+            return datos
+        return None
+    except Exception:
+        return {"error": "Error al buscar por RFC"}
+
 def consulta_All():
     try:
         # Buscamos todos los documentos en la colección
